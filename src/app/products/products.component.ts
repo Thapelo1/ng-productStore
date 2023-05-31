@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Product} from "../interfaces/product.interface";
 import {MockData} from "../data/mock-data";
+import {ProductService} from "../product.service";
 
 @Component({
   selector: 'app-products',
@@ -10,17 +11,15 @@ import {MockData} from "../data/mock-data";
 export class ProductsComponent implements OnInit{
   products: Product[] = [];
 
-  constructor() {
-    this.products = MockData.products
+  constructor(private ps: ProductService) {
+    this.products = this.ps.getProducts();
   }
 
   ngOnInit() {
   }
 
   removeProduct(product: Product) {
-    let index = this.products.indexOf(product);
-    if (index !== -1) {
-      this.products.splice(index, 1);
-    }
+    this.ps.removeProduct(product);
+    this.products = this.ps.getProducts();
   }
 }
